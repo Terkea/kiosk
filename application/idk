@@ -1,0 +1,10 @@
+https://stackoverflow.com/questions/19246643/how-do-i-force-django-to-connect-to-oracle-using-service-name
+
+docker run -d -p 1521:1521 --name oracle_kiosk store/oracle/database-enterprise:12.2.0.1
+
+docker exec -it a0a2d4be5022 bash -c "source /home/oracle/.bashrc; sqlplus /nolog"
+connect sys as sysdba
+Oradoc_db1
+alter session set "_ORACLE_SCRIPT"=true;
+create user terkea identified by test;
+grant all privileges to terkea;
