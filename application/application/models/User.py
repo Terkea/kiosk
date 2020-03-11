@@ -18,8 +18,8 @@ class User(Base):
     is_admin = Column(Boolean(), nullable=False)
 
     # add the foreign keys
-    event = relationship("Event")
-    booking = relationship("Booking")
+    event = relationship("Event", backref="user")
+    booking = relationship("Booking", backref="user")
 
     def __repr__(self):
         return str(self.__dict__)

@@ -16,7 +16,7 @@ class Event(Base):
     picture = Column(String(255))
 
     # add the foreign keys
-    event = relationship("Event")
+    booking = relationship("Booking", backref="event")
 
     def __repr__(self):
         return str(self.__dict__)
