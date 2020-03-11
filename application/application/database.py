@@ -16,4 +16,7 @@ def init_db():
     # they will be registered properly on the metadata.  Otherwise
     # you will have to import them first before calling init_db()
     from application.models import User
+    from application.models import Category
+    from application.models import Event
+    from application.models import Booking
     Base.metadata.create_all(bind=engine)

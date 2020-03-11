@@ -1,4 +1,4 @@
-## run
+## run flask
 ```
 export FLASK_APP='run.py'
 flask run
