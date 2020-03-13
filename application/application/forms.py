@@ -12,3 +12,7 @@ class registerForm(FlaskForm):
     city = StringField('City', validators=[DataRequired()])
     postcode = StringField('Post code', validators=[DataRequired()])
     course = StringField('Course', validators=[DataRequired()])
+
+class loginForm(FlaskForm):
+    email = StringField('email', validators=[DataRequired(), Email()])
+    password = StringField('password', validators=[DataRequired()])
