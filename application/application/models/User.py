@@ -1,10 +1,10 @@
-from sqlalchemy import Column, Integer, String, Boolean, ForeignKey
+from sqlalchemy import Column, Integer, String, Boolean, ForeignKey, Sequence
 from sqlalchemy.orm import relationship
 from application.database import Base
 
 class User(Base):
     __tablename__ = 'user'
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, Sequence('id_seq'), primary_key=True)
     first_name = Column(String(255), nullable=False)
     last_name = Column(String(255), nullable=False)
     email = Column(String(255), unique=True, nullable=False)
@@ -18,8 +18,10 @@ class User(Base):
     is_admin = Column(Boolean(), nullable=False)
 
     # add the foreign keys
-    event = relationship("Event", backref="user")
-    booking = relationship("Booking", backref="user")
+    event = relationship("Event")
+    booking = relationship("Booking")
+
+    autoload=True
 
     def __repr__(self):
         return str(self.__dict__)

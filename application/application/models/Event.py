@@ -1,10 +1,10 @@
-from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy import Column, Integer, String, ForeignKey, Sequence
 from sqlalchemy.orm import relationship
 from application.database import Base
 
 class Event(Base):
     __tablename__ = 'event'
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, Sequence('id_seq'), primary_key=True)
     user_id = Column(Integer, ForeignKey('user.id'), nullable=False)
     name = Column(String(255), nullable=False)
     venue = Column(String(255), nullable=False)
@@ -18,5 +18,7 @@ class Event(Base):
     # add the foreign keys
     booking = relationship("Booking", backref="event")
 
+    autoload = True
+    
     def __repr__(self):
         return str(self.__dict__)
