@@ -88,7 +88,7 @@ def register():
 def logout():
     del session['token']
     return redirect(url_for('index'))
-
+    
 @app.route('/my_profile/', methods=['GET', 'POST'])
 def my_profile():
     _user = get_user()
@@ -125,6 +125,11 @@ def my_bookings():
 @app.route('/')
 def index():
     return render_template('index.html')
+
+@app.route('/events')
+def events():
+    all_events = Event.query.all()
+    return render_template('events.html', events=all_events)
 
 @app.route('/contact_us')
 def contact_us():
