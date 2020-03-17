@@ -14,9 +14,10 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
   <!-- Material Kit CSS -->
   <link rel="stylesheet" href="{{url_for('static', filename='assets/css/material-kit.css')}}">
+  
 </head>
 
-<body>
+<body id="body">
   <nav id='navbar' class="navbar navbar-color-on-scroll navbar-transparent fixed-top navbar-expand-lg" color-on-scroll="100">
     <div class="container">
       <div class="navbar-translate">
@@ -59,13 +60,20 @@
 
 {% endblock content %}
 
-
   <footer class="footer footer-default">
   </footer>
 
-{% block javascript %}
 
-{% endblock javascript %}  
+  <script src="{{url_for('static', filename='assets/js/core/jquery.min.js')}}"></script>
+  <script src="{{url_for('static', filename='assets/js/core/popper.min.js')}}"></script>
+  <script src="{{url_for('static', filename='assets/js/core/bootstrap-material-design.min.js')}}"></script>
+  <script src="{{url_for('static', filename='assets/js/plugins/moment.min.js')}}"></script>
+  <script src="{{url_for('static', filename='assets/js/plugins/bootstrap-datetimepicker.js')}}"></script>
+  <script src="{{url_for('static', filename='assets/js/plugins/nouislider.min.js')}}"></script>
+  <script src="{{url_for('static', filename='assets/js/material-kit.js')}}"></script>
+  {% block javascript %}
+
+  {% endblock javascript %}  
 </body>
 
 </html>

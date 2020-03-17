@@ -1,0 +1,129 @@
+{% extends "base_template.html" %}
+{% block content %}
+
+<!-- Modal -->
+<div class="modal fade" id="updateProfile" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel2">Update profile</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="/my_profile/" method="post">
+                {{ form2.csrf_token }}
+                    <div class="form-group">
+                        {{ form2.mobile(class='form-control', type='text', placeholder="Phone number", value=user.mobile) }}
+                    </div>
+
+                    <div class="form-group">
+                        {{ form2.address(class='form-control', type='text', placeholder="Address", value=user.address) }}
+                    </div>
+
+                    <div class="form-group">
+                        {{ form2.postcode(class='form-control', type='text', placeholder="Postcode", value=user.postcode) }}
+                    </div>
+
+                    <div class="form-group">
+                        {{ form2.city(class='form-control', type='text', placeholder="City", value=user.city) }}
+                    </div>
+
+                    <div class="form-group">
+                        {{ form2.course(class='form-control', type='text', placeholder="Couse", value=user.course) }}
+                    </div>
+                    <input id="form2-submit" name="form2-submit" type="submit" class="btn btn-primary btn-block" value="Update">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="changePassword" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-center" id="exampleModalLabel">Change password</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="/my_profile/" method="post">
+                    {{ form.csrf_token }}
+
+                    <div class="form-group">
+                        {{ form.old_password(class='form-control', type='password', placeholder="Old password") }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.new_password(class='form-control', type='password', placeholder="New password") }}
+                    </div>
+                    <input id="form-submit" name="form-submit" type="submit" class="btn btn-primary btn-block" value="Update">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+  <div class="page-header header-filter" data-parallax="true" style="background-image: url({{url_for('static', filename='assets/img/city-profile.jpg')}});"></div>
+  <div class="main main-raised">
+    <div class="profile-content">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6 ml-auto mr-auto">
+            <div class="profile">
+              <div class="avatar">
+                <img src="{{url_for('static', filename='assets/img/faces/christian.jpg')}}" alt="Circle Image" class="img-raised rounded-circle img-fluid">
+              </div>
+              <div class="name">
+                <h3 class="title">{{ user.first_name + " " + user.last_name }}</h3>
+                <h6>{{ user.email }}</h6>
+                <h6>{{ user.mobile }}</h6>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+        <div class="description text-center">
+            <h5>{{user.address + ", " + user.postcode + ", " + user.city}} </h5>
+            <h5>{{user.course}} </h5>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#changePassword">Change Password</button>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#updateProfile">Update profile</button>
+            <br>
+            <br>
+            <br>
+            {% for error in form.errors %}
+                <p class="text-danger text-center">{{ error }} invalid</p>
+            {% endfor %}
+
+            {% for error in form2.errors %}
+                <p class="text-danger text-center">{{ error }} invalid</p>
+            {% endfor %}
+            
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            
+            {% for message in messages %}
+                <p class="text-danger text-center">{{ message }}</p>
+            {% endfor %}
+            
+            {% endif %}
+            {% endwith %}
+        
+        </div>
+      </div>
+    </div>
+
+{% endblock content %}
+
+{% block javascript %}
+<script>
+body.classList.add("profile-page");
+body.classList.add("sidebar-collapse");
+</script>
+{% endblock javascript %}

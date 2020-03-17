@@ -6,12 +6,17 @@ import datetime
 
 from application import app
 from application.database import db_session
-from application.forms import registerForm, loginForm
+from application.forms import registerForm, loginForm, changePassword, updateProfile
 
 from application.models.User import User
 from application.models.Event import Event
 from application.models.Booking import Booking
 from application.models.Category import Category
+
+def get_user():
+    token = jwt.decode(session['token'], app.config['SECRET_KEY'])
+    user = User.query.filter_by(id=token['id']).first()
+    return user
 
 @app.before_request
 def require_login():
@@ -37,7 +42,7 @@ def login():
             if check_password_hash(_user.password, password):
             # generate token
                 token = jwt.encode(
-                    {'public_id': _user.id, 'exp': datetime.datetime.utcnow() + datetime.timedelta(days=365)},
+                    {'id': _user.id, 'exp': datetime.datetime.utcnow() + datetime.timedelta(days=365)},
                     app.config['SECRET_KEY'])
                 session['token'] = token
                 return redirect(url_for('index'))
@@ -81,15 +86,37 @@ def register():
 
 @app.route('/logout/')
 def logout():
-    """
-    delete the session token
-    """
     del session['token']
     return redirect(url_for('index'))
 
-@app.route('/my_profile')
+@app.route('/my_profile/', methods=['GET', 'POST'])
 def my_profile():
-    return render_template('index.html')
+    _user = get_user()
+    form = changePassword()
+    form2 = updateProfile()
+
+    if "form-submit" in request.form and form.validate_on_submit():
+        actual_password = str(form.old_password.data)
+        new_password = str(form.new_password.data)
+
+        if check_password_hash(_user.password, actual_password):
+            _user.password = generate_password_hash(str(form.new_password.data), method='sha256')
+            db_session.commit()
+            flash('Password updated')
+        else:
+            flash('This is not your password')
+
+    if "form2-submit" in request.form and form2.validate_on_submit():
+        _user.mobile = str(form2.mobile.data)
+        _user.address = str(form2.address.data)
+        _user.city = str(form2.city.data)
+        _user.postcode = str(form2.postcode.data)
+        _user.course = str(form2.course.data)
+
+        db_session.commit()
+        flash('Profile updated')
+
+    return render_template('my_profile.html', user=_user, form=form, form2=form2)
 
 @app.route('/my_bookings')
 def my_bookings():
