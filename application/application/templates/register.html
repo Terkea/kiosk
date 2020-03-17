@@ -16,8 +16,7 @@
               <div class="card-body">
 
                 {% for error in form.errors %}
-                    <p class="text-danger">{{ error }} invalid</p>
-                    <br>
+                    <p class="text-danger text-center">{{ error }} invalid</p>
                 {% endfor %}
 
                 {% with messages = get_flashed_messages() %}

@@ -19,7 +19,7 @@ def require_login():
     all routes are protected except the ones from  allowed_routes
     if a session is initialized with a valid token the access is granted
     """
-    allowed_routes = ['login', 'register']
+    allowed_routes = ['login', 'register', 'static']
     if request.endpoint not in allowed_routes and 'token' not in session:
         return redirect(url_for('login'))
 
@@ -47,7 +47,9 @@ def login():
         else:
             flash("Wrong email or password")
     else:
+        # flash("Wrong email or password")
         print("[INFO] Login form not submited")
+
 
     return render_template('login.html', form=form)
 
@@ -85,7 +87,22 @@ def logout():
     del session['token']
     return redirect(url_for('index'))
 
+@app.route('/my_profile')
+def my_profile():
+    return render_template('index.html')
+
+@app.route('/my_bookings')
+def my_bookings():
+    return render_template('index.html')
 
 @app.route('/')
 def index():
+    return render_template('index.html')
+
+@app.route('/contact_us')
+def contact_us():
+    return render_template('index.html')
+
+@app.route('/faq')
+def faq():
     return render_template('index.html')
