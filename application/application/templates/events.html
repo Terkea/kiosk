@@ -1,8 +1,11 @@
 {% extends "base_template.html" %} {% block content %}
+<script>
+  navbar.classList.remove("navbar-transparent");
+  navbar.classList.add("bg-primary");
+</script>
 <div class="container-fluid" style="margin-top: 150px;">
   <h1 class="text-center" style="margin-bottom: 60px;">Search events</h1>
   <div class="row content-justify-center">
-
     <div class="col-md-2">
       <div class="card">
         <div class="card-header card-header-rose">
@@ -12,59 +15,90 @@
           <form>
             <div class="form-group">
               <input
-                type="email"
+                type="text"
+                name="category"
                 class="form-control"
                 placeholder="Category"
               />
             </div>
+            {% if request.args.get('name') %}
+                <input
+                    type="text"
+                    value="{{request.args.get('name')}}"
+                    name="name"
+                    class="form-control"
+                    placeholder="Name"
+                />
+            {% else %}
+                <input
+                    type="text"
+                    name="name"
+                    class="form-control"
+                    placeholder="Name"
+                />
+            {% endif %}
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="Name" />
-            </div>
-            <div class="form-group">
-                <input type="text" class="form-control" placeholder="Location" />
-            </div>
-            <div class="form-group">
-                <input type="text" class="form-control" placeholder="Price" />
+            {% if request.args.get('location') %}
+                <input
+                    type="text"
+                    value="{{request.args.get('location')}}"
+                    name="location"
+                    class="form-control"
+                    placeholder="Location"
+                />
+            {% else %}
+                <input
+                    type="text"
+                    name="location"
+                    class="form-control"
+                    placeholder="Location"
+                />
+            {% endif %}
+
             </div>
             <button type="submit" class="btn btn-primary btn-block">
               Filter
             </button>
           </form>
+          <a
+            href="{{ url_for('events') }}"
+            id="clear_filters"
+            class="btn btn-default btn-block"
+          >
+            Clear Filters
+          </a>
         </div>
       </div>
     </div>
 
     <div class="col-md-9">
-        {% for event in events %}
-        <div class="card" style="margin-bottom: 70px;">
-            <div class="card-header">
-                <h4 class="card-title">{{ event.name }}</h4>
-                <!-- TODO: add category foreign key to event -->
-                <p class="category">{{ event.category }}</p>
-                <p class="category">{{ event.event_type }}</p>
-            </div>
-            <div class="card-body">
-                <p><span class="text-muted">Description:</span> {{ event.description }}</p>
-                <p><span class="text-muted">Slots available:</span> {{ event.slots_available }}</p>
-                <p><span class="text-muted">Price:</span> {{ event.entry_price }}</p>
-                <p><span class="text-muted">Venue:</span> {{ event.venue }}</p>
-                <p><span class="text-muted">Datetime:</span> {{ event.datetime }}</p>
-            </div>
-            <div class="card-footer">
-                <br>
-                <button class="btn btn-primary">Get ticket</button>
-            </div>
+      {% for event in events %}
+      <div class="card" style="margin-bottom: 70px;">
+        <div class="card-header">
+          <h4 class="card-title">{{ event.name }}</h4>
+          <p class="category">{{ event.category }}</p>
+          <p class="category">{{ event.event_type }}</p>
         </div>
+        <div class="card-body">
+          <p>
+            <span class="text-muted">Description:</span> {{ event.description }}
+          </p>
+          <p>
+            <span class="text-muted">Slots available:</span> {{
+            event.slots_available }}
+          </p>
+          <p><span class="text-muted">Price:</span> {{ event.entry_price }}</p>
+          <p><span class="text-muted">Venue:</span> {{ event.venue }}</p>
+          <p><span class="text-muted">Datetime:</span> {{ event.datetime }}</p>
+        </div>
+        <div class="card-footer">
+          <br />
+          <button class="btn btn-primary">Get ticket</button>
+        </div>
+      </div>
 
-        {% endfor %}
+      {% endfor %}
     </div>
-    
   </div>
 </div>
-{% endblock content %} {% block javascript %}
-<script>
-// TODO: remove extend and come with a solid navigation bar that has no styling behaviour
-  navbar.classList.remove("navbar-transparent");
-  navbar.classList.add("bg-primary");
-</script>
-{% endblock javascript %}
+{% endblock content %} {% block javascript %} {% endblock javascript %}

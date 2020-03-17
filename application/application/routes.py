@@ -126,9 +126,13 @@ def my_bookings():
 def index():
     return render_template('index.html')
 
-@app.route('/events')
+@app.route('/events', methods=['GET', 'POST'])
 def events():
+    # print(request.args.get('category'))
     all_events = Event.query.all()
+    if request.args.get('name') or request.args.get('location'):
+        all_events = Event.query.filter(Event.name.like('%' + request.args.get('name') + '%'),
+         Event.venue.like('%' + request.args.get('location') + '%'))
     return render_template('events.html', events=all_events)
 
 @app.route('/contact_us')
