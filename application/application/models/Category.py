@@ -1,4 +1,5 @@
 from sqlalchemy import Column, Integer, String, Sequence
+from sqlalchemy.orm import relationship
 from application.database import Base
 
 class Category(Base):
@@ -7,6 +8,8 @@ class Category(Base):
     name = Column(String(255), nullable=False)
 
     autoload = True
+
+    event = relationship("Event")
     
     def __repr__(self):
         return str(self.__dict__)

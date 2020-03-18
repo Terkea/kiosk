@@ -128,12 +128,18 @@ def index():
 
 @app.route('/events', methods=['GET', 'POST'])
 def events():
-    # print(request.args.get('category'))
-    all_events = Event.query.all()
-    if request.args.get('name') or request.args.get('location'):
-        all_events = Event.query.filter(Event.name.like('%' + request.args.get('name') + '%'),
-         Event.venue.like('%' + request.args.get('location') + '%'))
-    return render_template('events.html', events=all_events)
+    # the data is structured into a list where 
+    # 0 is the index for event 
+    # 1 for category
+    all_categories = Category.query.all()
+    all_events = db_session.query(Event, Category).join(Category).all()
+
+    if request.args.get('name') or request.args.get('location') or request.args.get('category'):
+        all_events = db_session.query(Event, Category).join(Category).filter(
+            Event.name.like('%' + request.args.get('name') + '%'),
+            Event.venue.like('%' + request.args.get('location') + '%'),
+            Event.category_id.like('%' + request.args.get('category') + '%'))
+    return render_template('events.html', events=all_events, categories=all_categories)
 
 @app.route('/contact_us')
 def contact_us():

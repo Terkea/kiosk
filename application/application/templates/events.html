@@ -14,13 +14,27 @@
         <div class="card-body">
           <form>
             <div class="form-group">
-              <input
-                type="text"
-                name="category"
-                class="form-control"
-                placeholder="Category"
-              />
+              {% if request.args.get('category') %}
+
+              <select name='category' class="form-control">
+                <option selected value="{{request.args.get('category')}}">Choose category...</option>
+
+                {% for category in categories %}
+                  <option value="{{category.id}}">{{ category.name }}</option>
+                {% endfor %}
+
+              </select>
+              {% else %}
+                <select name='category' class="form-control">
+                <option selected value="">Choose category...</option>
+                {% for category in categories %}
+                  <option value="{{category.id}}">{{ category.name }}</option>
+                {% endfor %}
+              </select>
+              {% endif %}
             </div>
+
+            <div class="form-group">
             {% if request.args.get('name') %}
                 <input
                     type="text"
@@ -37,6 +51,8 @@
                     placeholder="Name"
                 />
             {% endif %}
+            </div>
+
             <div class="form-group">
             {% if request.args.get('location') %}
                 <input
@@ -54,8 +70,8 @@
                     placeholder="Location"
                 />
             {% endif %}
-
             </div>
+
             <button type="submit" class="btn btn-primary btn-block">
               Filter
             </button>
@@ -75,28 +91,29 @@
       {% for event in events %}
       <div class="card" style="margin-bottom: 70px;">
         <div class="card-header">
-          <h4 class="card-title">{{ event.name }}</h4>
-          <p class="category">{{ event.category }}</p>
-          <p class="category">{{ event.event_type }}</p>
+          <h4 class="card-title">{{ event[0].name }}</h4>
+          <p class="category">{{ event[0].category }}</p>
+          <p class="category">{{ event[0].event_type }}</p>
         </div>
         <div class="card-body">
           <p>
-            <span class="text-muted">Description:</span> {{ event.description }}
+            <span class="text-muted">Description:</span> {{ event[0].description }}
           </p>
           <p>
             <span class="text-muted">Slots available:</span> {{
             event.slots_available }}
           </p>
-          <p><span class="text-muted">Price:</span> {{ event.entry_price }}</p>
-          <p><span class="text-muted">Venue:</span> {{ event.venue }}</p>
-          <p><span class="text-muted">Datetime:</span> {{ event.datetime }}</p>
+          <p><span class="text-muted">Price:</span> {{ event[0].entry_price }}</p>
+          <p><span class="text-muted">Venue:</span> {{ event[0].venue }}</p>
+          <p><span class="text-muted">Datetime:</span> {{ event[0].datetime }}</p>
+          <p><span class="text-muted">Category:</span> {{ event[1].name }}</p>
         </div>
         <div class="card-footer">
           <br />
           <button class="btn btn-primary">Get ticket</button>
+          <button class="btn btn-rose">View event</button>
         </div>
       </div>
-
       {% endfor %}
     </div>
   </div>
