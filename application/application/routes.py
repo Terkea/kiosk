@@ -121,7 +121,9 @@ def my_profile():
 
 @app.route('/my_bookings')
 def my_bookings():
-    return render_template('index.html')
+    _user = get_user()
+    _bookings = db_session.query(Booking, Event).join(Event).filter(Booking.user_id == _user.id)
+    return render_template('my_bookings.html', user=_user, bookings=_bookings)
 
 @app.route('/')
 def index():
