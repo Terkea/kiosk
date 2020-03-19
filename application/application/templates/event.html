@@ -1,0 +1,45 @@
+{% extends "base_template.html" %}
+{% block content %}
+<script>
+    navbar.classList.add('navbar-color-on-scroll');
+    navbar.classList.add('bg-primary');
+</script>
+  <div class="page-header header-filter" data-parallax="true" style="background-image: url({{url_for('static', filename='assets/img/city-profile.jpg')}});"></div>
+  <div class="main main-raised">
+    <div class="profile-content">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-9 ml-auto mr-auto">
+            <div class="profile">
+            </div>
+          </div>
+        </div>
+
+        <div class="description text-center">
+            <div class="card" style="margin-top: 150px;">
+            <div class="card-header">
+            <h3 class="card-title">{{ event.name }}</h3>
+            </div>
+                <div class="card-body">
+                    <h3>{{event.description}}</h3>
+                </div> 
+            </div>
+            <div class="card-footer">
+                <h6><span>Venue: </span>{{ event.venue }}</h6>
+                <h6><span>Datetime: </span>{{ event.datetime }}</h6>
+                <h6><span>Price: </span>{{ event.entry_price }}</h6>
+                <h6><span>Tickets available: </span>{{ event.slots_available }}</h6>
+            </div>
+            <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#changePassword">Get ticket</button>
+        </div>
+      </div>
+    </div>
+
+{% endblock content %}
+
+{% block javascript %}
+<script>
+body.classList.add("profile-page");
+body.classList.add("sidebar-collapse");
+</script>
+{% endblock javascript %}

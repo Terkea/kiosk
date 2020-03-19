@@ -28,7 +28,7 @@ def require_login():
     if request.endpoint not in allowed_routes and 'token' not in session:
         return redirect(url_for('login'))
 
-@app.route('/login/', methods=['GET', 'POST'])
+@app.route('/login/', methods=['POST'])
 def login():
     form = loginForm()
 
@@ -58,7 +58,7 @@ def login():
 
     return render_template('login.html', form=form)
 
-@app.route('/register/', methods=['GET', 'POST'])
+@app.route('/register/', methods=['POST'])
 def register():
     form = registerForm()
     if form.validate_on_submit():
@@ -78,6 +78,7 @@ def register():
         db_session.add(_user)
         try:
             db_session.commit()
+            return redirect(url_for('login'))
         except:
             flash('Email address already taken')
             return redirect(url_for('register'))
@@ -126,7 +127,7 @@ def my_bookings():
 def index():
     return render_template('index.html')
 
-@app.route('/events', methods=['GET', 'POST'])
+@app.route('/events', methods=['GET'])
 def events():
     # the data is structured into a list where 
     # 0 is the index for event 
@@ -140,6 +141,12 @@ def events():
             Event.venue.like('%' + request.args.get('location') + '%'),
             Event.category_id.like('%' + request.args.get('category') + '%'))
     return render_template('events.html', events=all_events, categories=all_categories)
+
+@app.route('/event/<int:id>', methods=['GET'])
+def event(id):
+    _user = get_user()
+    _event = Event.query.filter(Event.id == id).first()
+    return render_template('event.html', event=_event, user=_user)
 
 @app.route('/contact_us')
 def contact_us():

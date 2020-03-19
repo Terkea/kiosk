@@ -92,26 +92,21 @@
       <div class="card" style="margin-bottom: 70px;">
         <div class="card-header">
           <h4 class="card-title">{{ event[0].name }}</h4>
-          <p class="category">{{ event[0].category }}</p>
-          <p class="category">{{ event[0].event_type }}</p>
+          <p class="category">{{ event[1].name }}</p>
         </div>
         <div class="card-body">
           <p>
-            <span class="text-muted">Description:</span> {{ event[0].description }}
+            <span class="text-muted">Description:</span> {{ event[0].description[:200] + "..."  | safe }}
           </p>
           <p>
-            <span class="text-muted">Slots available:</span> {{
-            event.slots_available }}
+            <span class="text-muted">Slots available:</span> {{event[0].slots_available }} &nbsp;&nbsp;&nbsp;&nbsp;
+            <span class="text-muted">Venue:</span> {{ event[0].venue }} &nbsp;&nbsp;&nbsp;&nbsp;
           </p>
-          <p><span class="text-muted">Price:</span> {{ event[0].entry_price }}</p>
-          <p><span class="text-muted">Venue:</span> {{ event[0].venue }}</p>
-          <p><span class="text-muted">Datetime:</span> {{ event[0].datetime }}</p>
-          <p><span class="text-muted">Category:</span> {{ event[1].name }}</p>
         </div>
         <div class="card-footer">
           <br />
           <button class="btn btn-primary">Get ticket</button>
-          <button class="btn btn-rose">View event</button>
+          <a href="event/{{event[0].id}}" class="btn btn-rose">View event</a>
         </div>
       </div>
       {% endfor %}

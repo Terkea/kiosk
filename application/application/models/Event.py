@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, Sequence
+from sqlalchemy import Column, Integer, String, ForeignKey, Sequence, Text
 from sqlalchemy.orm import relationship
 from application.database import Base
 
@@ -11,7 +11,7 @@ class Event(Base):
     venue = Column(String(255), nullable=False)
     datetime = Column(String(255), nullable=False)
     entry_price = Column(String(255), nullable=False)
-    description = Column(String(255), nullable=False)
+    description = Column(Text(), nullable=False)
     event_type = Column(String(255), nullable=False)
     slots_available = Column(String(255), nullable=False)
     picture = Column(String(255))
