@@ -6,7 +6,7 @@ import datetime
 
 from application import app
 from application.database import db_session
-from application.forms import registerForm, loginForm, changePassword, updateProfile
+from application.forms import registerForm, loginForm, changePassword, updateProfile, buyTicket
 
 from application.models.User import User
 from application.models.Event import Event
@@ -142,11 +142,29 @@ def events():
             Event.category_id.like('%' + request.args.get('category') + '%'))
     return render_template('events.html', events=all_events, categories=all_categories)
 
-@app.route('/event/<int:id>', methods=['GET'])
+@app.route('/event/<int:id>', methods=['GET', 'POST'])
 def event(id):
+    form = buyTicket()
     _user = get_user()
     _event = Event.query.filter(Event.id == id).first()
-    return render_template('event.html', event=_event, user=_user)
+
+    if form.validate_on_submit():
+        event_id = str(form.event_id.data)
+        user_id = str(form.user_id.data)
+        booking = Booking(
+            user_id=user_id,
+            event_id=event_id
+        )
+
+        if Booking.query.filter(Booking.user_id == user_id, Booking.event_id == event_id).first():
+            flash('It seems like you already bought a ticket for this event. Leave some for the others')
+        else:
+            db_session.add(booking)
+            db_session.commit()
+            flash('Ticket bought successfully')
+
+
+    return render_template('event.html', event=_event, user=_user, form=form)
 
 @app.route('/contact_us')
 def contact_us():

@@ -1,4 +1,6 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, Sequence
+import datetime
+
+from sqlalchemy import Column, Integer, String, ForeignKey, Sequence, DateTime
 from application.database import Base
 
 class Booking(Base):
@@ -6,7 +8,7 @@ class Booking(Base):
     id = Column(Integer, Sequence('id_seq'), primary_key=True)
     event_id = Column(Integer, ForeignKey('event.id'), nullable=False)
     user_id = Column(Integer, ForeignKey('user.id'), nullable=False)
-    datetime = Column(String(255), unique=True, nullable=False)
+    datetime = Column(DateTime, default=datetime.datetime.utcnow)
 
     autoload = True
     

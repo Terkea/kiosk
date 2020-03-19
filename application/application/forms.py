@@ -27,3 +27,7 @@ class updateProfile(FlaskForm):
     city = StringField('City', validators=[DataRequired()])
     postcode = StringField('Post code', validators=[DataRequired()])
     course = StringField('Course', validators=[DataRequired()])
+
+class buyTicket(FlaskForm):
+    event_id = StringField('', validators=[DataRequired()])
+    user_id = StringField('', validators=[DataRequired()])
