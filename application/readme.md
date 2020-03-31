@@ -1,3 +1,6 @@
+## requirements
+pip install -r requirements.txt
+
 ## run flask
 ```
 export FLASK_APP='run.py'
