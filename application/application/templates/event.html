@@ -68,7 +68,12 @@
                 <h6><span>Price: </span>{{ event.entry_price }}</h6>
                 <h6><span>Tickets available: </span>{{ event.slots_available }}</h6>
             </div>
-            <button type="button" class="btn btn-primary btn-block" data-toggle="modal" style="margin-bottom: 20px;" data-target="#buyTicket">Get ticket</button>
+            {% if user.is_guest %}
+                <button disabled type="button" class="btn btn-default btn-block" data-toggle="tooltip" data-placement="bottom" title="Guests can't get tickets" data-container="body">Guests can't get tickets</button>
+            {% else %}
+                <button type="button" class="btn btn-primary btn-block" data-toggle="modal" style="margin-bottom: 20px;" data-target="#buyTicket">Get ticket</button>
+            {% endif %}
+            
         </div>
       </div>
     </div>

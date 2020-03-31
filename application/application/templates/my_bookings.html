@@ -18,7 +18,7 @@
 
         <div class="description text-center">
             <div class="name">
-                <h3 class="title">My bookings</h3>
+                <h2 class="title" style="margin-bottom: 30px;" >My bookings</h2>
             </div>
 
             <table class="table">
@@ -28,7 +28,6 @@
                 <th scope="col">Due</th>
                 <th scope="col">Venue</th>
                 <th scope="col">Price</th>
-                <th scope="col">Name</th>
                 <th scope="col">Event</th>
                 </tr>
             </thead>
@@ -39,8 +38,7 @@
                     <td>{{booking[1].datetime}}</td>
                     <td>{{booking[1].venue}}</td>
                     <td>{{booking[1].entry_price}} GBP</td>
-                    <td>{{booking[1].name}}</td>
-                    <td><a href="/event/{{booking[1].id}}" class="btn btn-primary btn-sm">SEX</a></td>
+                    <td><a href="/event/{{booking[1].id}}" class="btn btn-primary btn-sm">{{booking[1].name}}</a></td>
                 </tr>
                 {% endfor %}
             </tbody>

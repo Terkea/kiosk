@@ -28,7 +28,7 @@ def require_login():
     if request.endpoint not in allowed_routes and 'token' not in session:
         return redirect(url_for('login'))
 
-@app.route('/login/', methods=['POST'])
+@app.route('/login/', methods=['GET','POST'])
 def login():
     form = loginForm()
 
@@ -58,7 +58,7 @@ def login():
 
     return render_template('login.html', form=form)
 
-@app.route('/register/', methods=['POST'])
+@app.route('/register/', methods=['GET','POST'])
 def register():
     form = registerForm()
     if form.validate_on_submit():
