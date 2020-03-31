@@ -6,7 +6,7 @@ import datetime
 
 from application import app
 from application.database import db_session
-from application.forms import registerForm, loginForm, changePassword, updateProfile, buyTicket
+from application.forms import registerForm, loginForm, changePassword, updateProfile, buyTicket, createEvent
 
 from application.models.User import User
 from application.models.Event import Event
@@ -127,13 +127,15 @@ def my_bookings():
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    _user = get_user()
+    return render_template('index.html', user=_user)
 
 @app.route('/events', methods=['GET'])
 def events():
     # the data is structured into a list where 
     # 0 is the index for event 
     # 1 for category
+    _user = get_user()
     all_categories = Category.query.all()
     all_events = db_session.query(Event, Category).join(Category).all()
 
@@ -142,7 +144,7 @@ def events():
             Event.name.like('%' + request.args.get('name') + '%'),
             Event.venue.like('%' + request.args.get('location') + '%'),
             Event.category_id.like('%' + request.args.get('category') + '%'))
-    return render_template('events.html', events=all_events, categories=all_categories)
+    return render_template('events.html', events=all_events, categories=all_categories, user=_user)
 
 @app.route('/event/<int:id>', methods=['GET', 'POST'])
 def event(id):
@@ -168,10 +170,42 @@ def event(id):
 
     return render_template('event.html', event=_event, user=_user, form=form)
 
-@app.route('/contact_us')
+@app.route('/contact_us/')
 def contact_us():
-    return render_template('index.html')
+    _user = get_user()
+    return render_template('index.html', user=_user)
 
-@app.route('/faq')
+@app.route('/faq/')
 def faq():
-    return render_template('index.html')
+    _user = get_user()
+    return render_template('index.html', user=_user)
+
+@app.route('/dashboard/', methods=['GET', 'POST'])
+def dashboard():
+    form = createEvent()
+    _user = get_user()
+    _event = Event.query.filter(Event.user_id == _user.id).all()
+    all_categories = Category.query.all()
+
+    if form.validate_on_submit():
+        _event = Event(
+            user_id=str(form.user_id.data),
+            name=str(form.name.data),
+            venue=str(form.venue.data),
+            description=str(form.description.data),
+            slots_available=str(form.slots_available.data),
+            datetime=str(form.datetime.data),
+            entry_price=str(form.entry_price.data),
+            event_type="test",
+            category_id=str(form.category_id.data),
+        )
+        db_session.add(_event)
+        try:
+            db_session.commit()
+            flash('New event created')
+            return redirect(url_for('dashboard'))
+        except:
+            pass
+
+
+    return render_template('dashboard.html', form=form, user=_user, events=_event, categories=all_categories)

@@ -31,3 +31,13 @@ class updateProfile(FlaskForm):
 class buyTicket(FlaskForm):
     event_id = StringField('', validators=[DataRequired()])
     user_id = StringField('', validators=[DataRequired()])
+
+class createEvent(FlaskForm):
+    user_id = StringField('user_id', validators=[DataRequired()])
+    category_id = StringField('Category', validators=[DataRequired()])
+    name = StringField('Name', validators=[DataRequired()])
+    venue = StringField('Venue', validators=[DataRequired()])
+    description = StringField('Description', validators=[DataRequired()])
+    slots_available = StringField('Slots available', validators=[DataRequired()])
+    datetime = StringField('Datetime', validators=[DataRequired()])
+    entry_price = StringField('Price per ticket', validators=[DataRequired()])
