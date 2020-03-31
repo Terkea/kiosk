@@ -173,12 +173,12 @@ def event(id):
 @app.route('/contact_us/')
 def contact_us():
     _user = get_user()
-    return render_template('index.html', user=_user)
+    return render_template('contact_us.html', user=_user)
 
 @app.route('/faq/')
 def faq():
     _user = get_user()
-    return render_template('index.html', user=_user)
+    return render_template('faq.html', user=_user)
 
 @app.route('/dashboard/', methods=['GET', 'POST'])
 def dashboard():
