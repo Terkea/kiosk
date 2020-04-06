@@ -61,6 +61,7 @@ def login():
 @app.route('/register/', methods=['GET','POST'])
 def register():
     form = registerForm()
+
     if form.validate_on_submit():
         _user = User(
             first_name=str(form.first_name.data),
@@ -72,10 +73,16 @@ def register():
             postcode= str(form.postcode.data),
             course= str(form.course.data),
             password=generate_password_hash(str(form.password.data), method='sha256'),
-            is_admin=False,
-            is_guest=False
+            is_admin=False
         )
+
+        if request.form.getlist('is_guest'):
+            _user.is_guest = True
+        else:
+            _user.is_guest = False
+
         db_session.add(_user)
+
         try:
             db_session.commit()
             return redirect(url_for('login'))

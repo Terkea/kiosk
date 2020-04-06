@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField
+from wtforms import StringField, BooleanField
 from wtforms.validators import DataRequired, Email
 
 class registerForm(FlaskForm):
@@ -12,6 +12,7 @@ class registerForm(FlaskForm):
     city = StringField('City', validators=[DataRequired()])
     postcode = StringField('Post code', validators=[DataRequired()])
     course = StringField('Course', validators=[DataRequired()])
+    is_guest = BooleanField('Is guest', validators=[])
 
 class loginForm(FlaskForm):
     email = StringField('email', validators=[DataRequired(), Email()])

@@ -53,7 +53,7 @@
                 <th scope="col">Venue</th>
                 <th scope="col">Price</th>
                 <th scope="col">Name</th>
-                <!-- <th scope="col">Actions</th> -->
+                <th scope="col">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -64,12 +64,10 @@
                         <td>{{event.venue}}</td>
                         <td>{{event.entry_price}} GBP</td>
                         <td>{{event.name}}</td>
-<!--
                         <td>
-                            <a href="" class="btn btn-default btn-sm">View/Edit</a>
+                            <a href="" class="btn btn-default btn-sm">Update</a>
                             <a href="" class="btn btn-warning btn-sm">Delete</a>
                         </td>
--->
                     </tr>
                     {% endfor %}
                 {% else %}

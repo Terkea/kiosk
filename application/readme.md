@@ -1,5 +1,8 @@
 ## requirements
+first of all create a new venv and run
+```
 pip install -r requirements.txt
+```
 
 ## run flask
 ```
