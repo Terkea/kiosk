@@ -214,5 +214,4 @@ def dashboard():
         except:
             pass
 
-
     return render_template('dashboard.html', form=form, user=_user, events=_event, categories=all_categories)
