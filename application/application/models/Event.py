@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, Sequence, Text
+from sqlalchemy import Column, Integer, String, ForeignKey, Sequence, Text, Boolean
 from sqlalchemy.orm import relationship
 from application.database import Base
 
@@ -15,6 +15,7 @@ class Event(Base):
     event_type = Column(String(255), nullable=False)
     slots_available = Column(String(255), nullable=False)
     picture = Column(String(255))
+    is_visible = Column(Boolean(), default=True)
 
     # add the foreign keys
     booking = relationship("Booking", backref="event")

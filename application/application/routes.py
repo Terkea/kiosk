@@ -144,10 +144,12 @@ def events():
     # 1 for category
     _user = get_user()
     all_categories = Category.query.all()
-    all_events = db_session.query(Event, Category).join(Category).all()
+    all_events = db_session.query(Event, Category).join(Category).filter(Event.is_visible == True).all()
+
 
     if request.args.get('name') or request.args.get('location') or request.args.get('category'):
         all_events = db_session.query(Event, Category).join(Category).filter(
+            Event.is_visible == True,
             Event.name.like('%' + request.args.get('name') + '%'),
             Event.venue.like('%' + request.args.get('location') + '%'),
             Event.category_id.like('%' + request.args.get('category') + '%'))
@@ -157,7 +159,7 @@ def events():
 def event(id):
     form = buyTicket()
     _user = get_user()
-    _event = Event.query.filter(Event.id == id).first()
+    _event = Event.query.filter(Event.id == id).filter(Event.is_visible is True).first()
 
     if form.validate_on_submit():
         event_id = str(form.event_id.data)
@@ -187,11 +189,16 @@ def faq():
     _user = get_user()
     return render_template('faq.html', user=_user)
 
+
 @app.route('/dashboard/', methods=['GET', 'POST'])
 def dashboard():
-    form = createEvent()
     _user = get_user()
-    _event = Event.query.filter(Event.user_id == _user.id).all()
+
+    if _user.is_admin is False:
+        return redirect(url_for('index'))
+
+    form = createEvent()
+    _event = Event.query.filter(Event.user_id == _user.id).filter(Event.is_visible == True).all()
     all_categories = Category.query.all()
 
     if form.validate_on_submit():
@@ -213,5 +220,23 @@ def dashboard():
             return redirect(url_for('dashboard'))
         except:
             pass
-
+            
     return render_template('dashboard.html', form=form, user=_user, events=_event, categories=all_categories)
+
+@app.route('/delete_event/<int:id>')
+def delete_event(id):
+    _user = get_user()
+
+    if _user.is_admin is False:
+        return redirect(url_for('index'))
+
+    _event = Event.query.filter_by(id=id).first()
+    _event.is_visible = False
+
+    try:
+        db_session.commit()
+        print('commited')
+    except:
+        pass
+
+    return redirect(url_for('dashboard'))
