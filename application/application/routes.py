@@ -6,7 +6,7 @@ import datetime
 
 from application import app
 from application.database import db_session
-from application.forms import registerForm, loginForm, changePassword, updateProfile, buyTicket, createEvent
+from application.forms import registerForm, loginForm, changePassword, updateProfile, buyTicket, createEvent, updateEvent
 
 from application.models.User import User
 from application.models.Event import Event
@@ -240,3 +240,30 @@ def delete_event(id):
         pass
 
     return redirect(url_for('dashboard'))
+
+@app.route('/update_event/<int:id>', methods=['GET', 'POST'])
+def update_event(id):
+    _user = get_user()
+    _event = Event.query.filter_by(id = id).first()
+    all_categories = Category.query.all()
+    
+    form = updateEvent()
+    
+    if "form-submit" in request.form and form.validate_on_submit :
+        _event.name = str(form.name.data)
+        _event.venue = str(form.venue.data)
+        _event.description = str(form.description.data)
+        _event.slots_available = str(form.slots_available.data)
+        _event.datetime = str(form.datetime.data)
+        _event.entry_price = str(form.entry_price.data)
+
+        try:
+            db_session.commit()
+        except:
+            return redirect(url_for(f'update_event/{_event.id}'))
+
+
+    if _user.is_admin is False:
+        return redirect(url_for('index'))
+
+    return render_template('update_event.html', user=_user, form=form, event=_event, categories=all_categories)

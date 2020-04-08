@@ -42,3 +42,11 @@ class createEvent(FlaskForm):
     slots_available = StringField('Slots available', validators=[DataRequired()])
     datetime = StringField('Datetime', validators=[DataRequired()])
     entry_price = StringField('Price per ticket', validators=[DataRequired()])
+
+class updateEvent(FlaskForm):
+    name = StringField('Name', validators=[DataRequired()])
+    venue = StringField('Venue', validators=[DataRequired()])
+    description = StringField('Description', validators=[DataRequired()])
+    slots_available = StringField('Slots available', validators=[DataRequired()])
+    datetime = StringField('Datetime', validators=[DataRequired()])
+    entry_price = StringField('Price per ticket', validators=[DataRequired()])

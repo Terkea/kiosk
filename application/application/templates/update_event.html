@@ -1,0 +1,104 @@
+{% extends "base_template.html" %}
+
+{% block content %}
+<script>
+    navbar.classList.remove("navbar-transparent");
+    navbar.classList.add("bg-primary");
+</script>
+<div class="container" style="margin-top: 150px;">
+    <h1 class="text-center" style="margin-bottom: 60px;">Admin Dashboard</h1>
+    {% for error in form.errors %}
+    <p class="text-danger text-center">{{ error }} invalid</p>
+    {% endfor %}
+
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+
+    {% for message in messages %}
+    <p class="text-success text-center">{{ message }}</p>
+    {% endfor %}
+
+    {% endif %}
+    {% endwith %}
+    <div class="row content-justify-center">
+        <div class="card card-nav-tabs">
+            <div class="card-header card-header-danger">
+                <!-- colors: "header-primary", "header-info", "header-success", "header-warning", "header-danger" -->
+                <div class="nav-navigation">
+                    <div class="nav-wrapper">
+                        <ul class="nav nav-tabs" data-tabs="tabs">
+                            <li class="nav-item">
+                                <a class="nav-link active" href="#events" data-toggle="tab">
+                                    <i class="material-icons">build</i>
+                                    Update event
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body ">
+                <div class="tab-content text-center">
+                    <div class="tab-pane active" id="new_event">
+
+                        <form action="/update_event/{{event.id}}" method="post">
+                            {{ form.csrf_token }}
+
+                            <input type="hidden" name="user_id" value="{{user.id}}">
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="name">Name</label>
+                                    <input type="text" class="form-control" name="name" value={{event.name}}
+                                        placeholder="Name">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="venue">Venue</label>
+                                    <input value={{event.venue}} type="text" class="form-control" name="venue"
+                                        placeholder="Venue">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="description"></label>
+                                <textarea class="form-control" name="description" rows="3"
+                                    placeholder="Description of the event">{{event.description}}</textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="slots_available">Slots available</label>
+                                <input value={{event.slots_available}} type="text" class="form-control"
+                                    name="slots_available" placeholder="Slots available">
+                            </div>
+                            <div class="form-group">
+                                <label for="datetime">Datetime</label>
+                                <input type="text" value={{event.datetime}} class="form-control datetimepicker"
+                                    name="datetime" placeholder="Datetime">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="entry_price">Entry Price</label>
+                                <input type="text" value={{event.entry_price}} class="form-control" name="entry_price"
+                                    placeholder="Price per ticket">
+                            </div>
+                            <button id="form-submit" name="form-submit" type="submit" class="btn btn-primary btn-block">Update event</button>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    {% endblock content %}
+
+    {% block javascript %}
+    <script>
+        $(document).ready(function () {
+            //init DateTimePickers
+            materialKit.initFormExtendedDatetimepickers();
+
+            // Sliders Init
+            materialKit.initSliders();
+        });
+    </script>
+
+    {% endblock javascript %}
