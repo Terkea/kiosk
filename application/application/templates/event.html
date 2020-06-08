@@ -10,7 +10,8 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title text-center" id="exampleModalLabel">Do you wish to buy a ticket for this event?</h5>
+                <h5 class="modal-title text-center" id="exampleModalLabel">Do you wish to buy a ticket for this event?
+                </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -24,65 +25,70 @@
                     <button type="button" class="btn btn-rose" data-dismiss="modal">Forget about it</button>
                     <br>
                     <br>
-                    <h6>NOTE: The payment will be made at the specified venue before the event begins, so please be there with 30 minutes in advance</h6>
+                    <h6>NOTE: The payment will be made at the specified venue before the event begins, so please be
+                        there with 30 minutes in advance</h6>
                 </form>
             </div>
         </div>
     </div>
 </div>
 
-  <div class="page-header header-filter" data-parallax="true" style="background-image: url({{url_for('static', filename='assets/img/city-profile.jpg')}});"></div>
-  <div class="main main-raised">
+<div class="page-header header-filter" data-parallax="true"
+    style="background-image: url({{url_for('static', filename='assets/img/city-profile.jpg')}});"></div>
+<div class="main main-raised">
     <div class="profile-content">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-9 ml-auto mr-auto">
-            <div class="profile">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-9 ml-auto mr-auto">
+                    <div class="profile">
+                    </div>
+                </div>
             </div>
-          </div>
-        </div>
 
-        <div class="description text-center">
+            <div class="description text-center">
 
-            {% with messages = get_flashed_messages() %}
-            {% if messages %}
-            
-            {% for message in messages %}
+                {% with messages = get_flashed_messages() %}
+                {% if messages %}
+
+                {% for message in messages %}
                 <h4 class="text-warning text-center" style="margin-top: 20px;">{{ message }}</h4>
-            {% endfor %}
-            
-            {% endif %}
-            {% endwith %}
+                {% endfor %}
 
-            <div class="card" style="margin-top: 100px;">
-            <div class="card-header">
-            <h3 class="card-title">{{ event.name }}</h3>
+                {% endif %}
+                {% endwith %}
+                <!-- {{event}} -->
+                <div class="card" style="margin-top: 100px;">
+                    <div class="card-header">
+                        <h3 class="card-title">{{ event.name }}</h3>
+                    </div>
+                    <div class="card-body">
+                        <h4>{{event.description}}</h4>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <h6><span>Venue: </span>{{ event.venue }}</h6>
+                    <h6><span>Datetime: </span>{{ event.datetime }}</h6>
+                    <h6><span>Price: </span>{{ event.entry_price }}</h6>
+                    <h6><span>Tickets available: </span>{{ event.slots_available }}</h6>
+                </div>
+                {% if user.is_guest %}
+                <button disabled type="button" class="btn btn-default btn-block" data-toggle="tooltip"
+                    data-placement="bottom" title="Guests can't get tickets" data-container="body">Guests can't get
+                    tickets</button>
+                {% else %}
+                <button type="button" class="btn btn-primary btn-block" data-toggle="modal" style="margin-bottom: 20px;"
+                    data-target="#buyTicket">Get ticket</button>
+                {% endif %}
+
             </div>
-                <div class="card-body">
-                    <h4>{{event.description}}</h4>
-                </div> 
-            </div>
-            <div class="card-footer">
-                <h6><span>Venue: </span>{{ event.venue }}</h6>
-                <h6><span>Datetime: </span>{{ event.datetime }}</h6>
-                <h6><span>Price: </span>{{ event.entry_price }}</h6>
-                <h6><span>Tickets available: </span>{{ event.slots_available }}</h6>
-            </div>
-            {% if user.is_guest %}
-                <button disabled type="button" class="btn btn-default btn-block" data-toggle="tooltip" data-placement="bottom" title="Guests can't get tickets" data-container="body">Guests can't get tickets</button>
-            {% else %}
-                <button type="button" class="btn btn-primary btn-block" data-toggle="modal" style="margin-bottom: 20px;" data-target="#buyTicket">Get ticket</button>
-            {% endif %}
-            
         </div>
-      </div>
     </div>
 
-{% endblock content %}
+    {% endblock content %}
 
-{% block javascript %}
-<script>
-body.classList.add("profile-page");
-body.classList.add("sidebar-collapse");
-</script>
-{% endblock javascript %}
+    {% block javascript %}
+    <script>
+        body.classList.add("profile-page");
+        body.classList.add("sidebar-collapse");
+    </script>
+    {% endblock javascript %}

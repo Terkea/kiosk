@@ -159,7 +159,7 @@ def events():
 def event(id):
     form = buyTicket()
     _user = get_user()
-    _event = Event.query.filter(Event.id == id).filter(Event.is_visible is True).first()
+    _event = Event.query.filter(Event.id == id).first()
 
     if form.validate_on_submit():
         event_id = str(form.event_id.data)
